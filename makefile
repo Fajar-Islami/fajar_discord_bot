@@ -9,3 +9,6 @@ bot:
 
 heroku:
 	git push heroku master
+
+herokuconfig:
+	cat .env | xargs heroku config:set

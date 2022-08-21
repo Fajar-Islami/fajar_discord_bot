@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -24,13 +25,17 @@ func init() {
 	v.SetConfigFile(".env")
 	pathDir, err := os.Executable()
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 	dir := filepath.Dir(pathDir)
 	v.AddConfigPath(dir)
 
+	// ell viper to automatically override values that it has read from config file
+	// with the values of the corresponding environment variables if they exist.
+	viper.AutomaticEnv()
+
 	if err := v.ReadInConfig(); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	BOT_TOKEN = v.GetString("BOT_TOKEN")
