@@ -22,29 +22,32 @@ var (
 
 func init() {
 	v := viper.New()
+
 	v.SetConfigFile(".env")
 	pathDir, err := os.Executable()
 	if err != nil {
-		log.Println(err)
+		log.Println("pathDir", err)
 	}
 	dir := filepath.Dir(pathDir)
 	v.AddConfigPath(dir)
 
-	// ell viper to automatically override values that it has read from config file
+	// Tell viper to automatically override values that it has read from config file
 	// with the values of the corresponding environment variables if they exist.
 	viper.AutomaticEnv()
+	v.BindEnv("TMP")
 
 	if err := v.ReadInConfig(); err != nil {
-		log.Println(err)
+		log.Println("ReadInConfig", err)
+		BOT_TOKEN = os.Getenv("BOT_TOKEN")
+		JOKESBAPAKBAPAKURI = os.Getenv("JOKESBAPAKBAPAKURI")
+		ENVIRONMENT = os.Getenv("ENVIRONMENT")
+	} else {
+		BOT_TOKEN = v.GetString("BOT_TOKEN")
+		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
+		ENVIRONMENT = v.GetString("ENVIRONMENT")
+
 	}
 
-	BOT_TOKEN = v.GetString("BOT_TOKEN")
-	JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
-	ENVIRONMENT = v.GetString("ENVIRONMENT")
-
-	fmt.Println("BOT_TOKEN", BOT_TOKEN)
-	fmt.Println("JOKESBAPAKBAPAKURI", JOKESBAPAKBAPAKURI)
-	fmt.Println("ENVIRONMENT", ENVIRONMENT)
 }
 
 func main() {
