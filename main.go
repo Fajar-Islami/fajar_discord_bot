@@ -107,7 +107,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println("Error: Can't get jokes-bapak2 ! :-(")
 			}
 		case command == "env":
-			str := fmt.Sprintf("Hi!, i'm running on **%s environment**", ENVIRONMENT)
+			str := fmt.Sprintf("Hi!, i'm running on **%s environment**g", ENVIRONMENT)
 			s.ChannelMessageSend(m.ChannelID, str)
 		// If the message is "ping" reply with "Poing!"
 		case command == "ping":
