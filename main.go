@@ -102,7 +102,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		command := content[1]
 
 		switch {
-		case command == "jokesbapak":
+		case command == "jokes":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
 			response, err := http.Get(JOKESBAPAKBAPAKURI)
 			if err != nil {
@@ -118,6 +118,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			} else {
 				fmt.Println("Error: Can't get jokes-bapak2 ! :-(")
 			}
+
 		case command == "env":
 			str := fmt.Sprintf("Hi!, i'm running on **%s environment**g", ENVIRONMENT)
 			s.ChannelMessageSend(m.ChannelID, str)
@@ -127,6 +128,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			// If the message is "ping" reply with "Pong!"
 		case command == "pong":
 			s.ChannelMessageSend(m.ChannelID, "Ping!")
+
+		case command == "command":
+			var str strings.Builder
+			str.WriteString("Fajar Bot command list :\n")
+			str.WriteString(fmt.Sprint("- `", content[0], ".jokes` = Get single random joke\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".env`= check environment\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".ping` = test ping\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".pong` = test ping\n"))
+
+			s.ChannelMessageSend(m.ChannelID, str.String())
+
 		default:
 			s.ChannelMessageSend(m.ChannelID, "**404** Command Not Found!")
 
