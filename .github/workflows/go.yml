@@ -1,4 +1,4 @@
-name: Ais Be
+name: Fajar Discord Bot
 
 on:
   workflow_dispatch:
