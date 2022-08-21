@@ -1,1 +1,1 @@
-worker: bin/go-getting-started
+worker: bin/go_discord_bot

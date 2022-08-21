@@ -6,7 +6,7 @@ run:
 	GOFLAGS=-mod=mod go run main.go
 
 bot:
-	./bin/gopher-bot-discord
+	./bin/go_discord_bot
 
 heroku:
 	git push heroku master
