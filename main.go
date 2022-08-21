@@ -24,18 +24,22 @@ func init() {
 	v.SetConfigFile(".env")
 	pathDir, err := os.Executable()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	dir := filepath.Dir(pathDir)
 	v.AddConfigPath(dir)
 
 	if err := v.ReadInConfig(); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	BOT_TOKEN = v.GetString("BOT_TOKEN")
 	JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
 	ENVIRONMENT = v.GetString("ENVIRONMENT")
+
+	fmt.Println("BOT_TOKEN", BOT_TOKEN)
+	fmt.Println("JOKESBAPAKBAPAKURI", JOKESBAPAKBAPAKURI)
+	fmt.Println("ENVIRONMENT", ENVIRONMENT)
 }
 
 func main() {
