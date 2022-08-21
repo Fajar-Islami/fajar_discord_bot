@@ -1,0 +1,1 @@
+worker: bin/go-getting-started
