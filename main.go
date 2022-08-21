@@ -120,7 +120,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 
 		case command == "env":
-			str := fmt.Sprintf("Hi!, i'm running on **%s environment**g", ENVIRONMENT)
+			str := fmt.Sprintf("Hi!, i'm running on **%s environment**", ENVIRONMENT)
 			s.ChannelMessageSend(m.ChannelID, str)
 		// If the message is "ping" reply with "Poing!"
 		case command == "ping":
