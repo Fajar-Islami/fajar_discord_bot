@@ -1,6 +1,6 @@
-build:
-	GOFLAGS=-mod=mod go build -o bin/gopher-bot-discord main.go 
-	
+compile:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app
+		
 run:
 	GOFLAGS=-mod=mod go run main.go
 
