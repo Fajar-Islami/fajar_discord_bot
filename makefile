@@ -16,3 +16,7 @@ herokuconfig:
 
 exportconfig:
 	export $(cat .env.dev | xargs)
+
+push:
+	git push
+	make heroku

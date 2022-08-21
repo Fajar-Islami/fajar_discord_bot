@@ -122,9 +122,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case command == "env":
 			str := fmt.Sprintf("Hi!, i'm running on **%s environment**", ENVIRONMENT)
 			s.ChannelMessageSend(m.ChannelID, str)
+
+		case command == "sholat":
+			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+
+		case command == "search":
+			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+
+		case command == "translate":
+			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+
 		// If the message is "ping" reply with "Poing!"
 		case command == "ping":
 			s.ChannelMessageSend(m.ChannelID, "Pong!")
+
 			// If the message is "ping" reply with "Pong!"
 		case command == "pong":
 			s.ChannelMessageSend(m.ChannelID, "Ping!")
@@ -134,6 +145,9 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			str.WriteString("Fajar Bot command list :\n")
 			str.WriteString(fmt.Sprint("- `", content[0], ".jokes` = Get single random joke\n"))
 			str.WriteString(fmt.Sprint("- `", content[0], ".env`= check environment\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".sholat` = COMING SOON!!\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".search` = COMING SOON!!\n"))
+			str.WriteString(fmt.Sprint("- `", content[0], ".translate` = COMING SOON!!\n"))
 			str.WriteString(fmt.Sprint("- `", content[0], ".ping` = test ping\n"))
 			str.WriteString(fmt.Sprint("- `", content[0], ".pong` = test ping\n"))
 
