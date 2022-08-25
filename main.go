@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"strings"
 	"syscall"
 
+	"github.com/Fajar-Islami/go_discord_bot/helper"
+	"github.com/Fajar-Islami/go_discord_bot/service"
 	"github.com/bwmarrin/discordgo"
 	"github.com/spf13/viper"
 )
@@ -104,19 +105,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		switch {
 		case command == "jokes":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
-			response, err := http.Get(JOKESBAPAKBAPAKURI)
+			resp := service.GetAPI(JOKESBAPAKBAPAKURI)
+			defer resp.Body.Close()
+
+			respStruct := &helper.ResponseStruct{
+				StatusCode:         resp.StatusCode,
+				ExpectedStatusCode: 200,
+				Name:               "jokes-bapak2",
+				Filename:           "jokes-bapak2.png",
+				RespBody:           resp.Body,
+			}
+
+			err := helper.SuccessStatus(s, m, respStruct)
 			if err != nil {
 				fmt.Println(err)
-			}
-			defer response.Body.Close()
-
-			if response.StatusCode == 200 {
-				_, err = s.ChannelFileSend(m.ChannelID, "jokes-bapak2.png", response.Body)
-				if err != nil {
-					fmt.Println(err)
-				}
-			} else {
-				fmt.Println("Error: Can't get jokes-bapak2 ! :-(")
 			}
 
 		case command == "env":
