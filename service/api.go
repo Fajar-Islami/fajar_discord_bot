@@ -28,6 +28,7 @@ func ListCommand(botname string) string {
 	str.WriteString(fmt.Sprint("- `", botname, " ping` = test ping\n"))
 	str.WriteString(fmt.Sprint("- `", botname, " pong` = test ping\n"))
 	str.WriteString(fmt.Sprint("- `", botname, " intro` = About this bot\n"))
+	str.WriteString(fmt.Sprint("- `", botname, " contribute` = Link Repository\n"))
 
 	return str.String()
 }

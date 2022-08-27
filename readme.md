@@ -28,4 +28,5 @@ Click this [link](https://discord.com/oauth2/authorize?client_id=101084203853258
 - `!fb translate` = COMING SOON!!.
 - `!fb ping` = test ping.
 - `!fb pong` = test ping.
-- `!fb intro` = GAbout this bot.
+- `!fb intro` = About this bot.
+- `!fb contribute` = Link Repository.

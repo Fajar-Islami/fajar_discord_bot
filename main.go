@@ -180,8 +180,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case command == "intro":
 			s.ChannelMessageSend(m.ChannelID, "Fajar BOT v1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
 
-		// example command = !fb c ?>,m ommand
-		case command == "commands  ?>,m ":
+		// example command = !fb contribute
+		case command == "contribute":
+			s.ChannelMessageSend(m.ChannelID, "Feel free to contribute here https://github.com/Fajar-Islami/fajar_discord_bot")
+
+		// example command = !fb commands
+		case command == "commands":
 			res := service.ListCommand(botname[0])
 			s.ChannelMessageSend(m.ChannelID, res)
 
