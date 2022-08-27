@@ -1,6 +1,7 @@
 package jokes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/Fajar-Islami/fajar_discord_bot/helper"
@@ -20,9 +21,16 @@ func NewJokesService(s *discordgo.Session, m *discordgo.MessageCreate) JokesServ
 	}
 }
 
-func (js *JokesServiceImpl) GetRandomJokes(uri string) (*helper.ResponseImageStruct, *http.Response) {
+func (js *JokesServiceImpl) GetRandomJokes(uri string) (*helper.ResponseImageStruct, *http.Response, string) {
 
-	resp := service.GetAPI(uri)
+	get := service.Get(uri)
+	resp, err := get.Do()
+
+	if err != nil {
+		log.Println(err)
+
+		return nil, nil, "Error Get Jokes"
+	}
 
 	respStruct := &helper.ResponseImageStruct{
 		StatusCode:         resp.StatusCode,
@@ -31,6 +39,6 @@ func (js *JokesServiceImpl) GetRandomJokes(uri string) (*helper.ResponseImageStr
 		Filename:           "jokes-bapak2.png",
 		RespBody:           resp.Body,
 	}
-	return respStruct, resp
+	return respStruct, resp, ""
 
 }

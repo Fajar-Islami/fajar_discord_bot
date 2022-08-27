@@ -19,11 +19,14 @@ import (
 )
 
 var (
-	BOT_TOKEN          string
-	JOKESBAPAKBAPAKURI string
-	ENVIRONMENT        string
-	PESTO_TOKEN        string
-	PESTO_URI          string
+	BOT_TOKEN               string
+	JOKESBAPAKBAPAKURI      string
+	ENVIRONMENT             string
+	PESTO_TOKEN             string
+	PESTO_URI               string
+	TRANSLATE_RapidAPI_KEY  string
+	TRANSLATE_RapidAPI_HOST string
+	TRANSLATE_RapidAPI_URI  string
 )
 
 func init() {
@@ -49,12 +52,18 @@ func init() {
 		ENVIRONMENT = os.Getenv("ENVIRONMENT")
 		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
 		PESTO_URI = os.Getenv("PESTO_URI")
+		TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
+		TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
+		TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
 	} else {
 		BOT_TOKEN = v.GetString("BOT_TOKEN")
 		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
 		ENVIRONMENT = v.GetString("ENVIRONMENT")
 		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
 		PESTO_URI = os.Getenv("PESTO_URI")
+		TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
+		TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
+		TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
 	}
 
 }
@@ -103,7 +112,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	translateService := translate.NewTranslateService(s, m)
+	translateService := translate.NewTranslateService(s, m, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI)
 	jokesService := jokes.NewJokesService(s, m)
 	searchService := search.NewSearchService(s, m)
 
@@ -119,7 +128,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// example command = !fb jokes
 		case command == "jokes":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
-			resBody, resp := jokesService.GetRandomJokes(JOKESBAPAKBAPAKURI)
+			resBody, resp, errGet := jokesService.GetRandomJokes(JOKESBAPAKBAPAKURI)
+
+			if errGet != "" {
+				s.ChannelMessageSend(m.ChannelID, errGet)
+			}
+
 			defer resp.Body.Close()
 			err := helper.ResponseImage(s, m, resBody)
 			if err != nil {

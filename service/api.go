@@ -2,17 +2,16 @@ package service
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 )
 
-func GetAPI(uri string) (response *http.Response) {
-	response, err := http.Get(uri)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return
-}
+// func GetAPI(uri string) (response *http.Response) {
+// 	response, err := http.Get(uri)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	return
+// }
 
 func ListCommand(botname string) string {
 	var str strings.Builder

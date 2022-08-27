@@ -7,5 +7,5 @@ import (
 )
 
 type JokesService interface {
-	GetRandomJokes(uri string) (*helper.ResponseImageStruct, *http.Response)
+	GetRandomJokes(uri string) (*helper.ResponseImageStruct, *http.Response, string)
 }

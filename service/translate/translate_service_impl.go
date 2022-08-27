@@ -8,14 +8,20 @@ import (
 )
 
 type TranslateServiceImpl struct {
-	s *discordgo.Session
-	m *discordgo.MessageCreate
+	s                       *discordgo.Session
+	m                       *discordgo.MessageCreate
+	TRANSLATE_RapidAPI_KEY  string
+	TRANSLATE_RapidAPI_HOST string
+	TRANSLATE_RapidAPI_URI  string
 }
 
-func NewTranslateService(s *discordgo.Session, m *discordgo.MessageCreate) TranslateService {
+func NewTranslateService(s *discordgo.Session, m *discordgo.MessageCreate, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI string) TranslateService {
 	return &TranslateServiceImpl{
-		s: s,
-		m: m,
+		s:                       s,
+		m:                       m,
+		TRANSLATE_RapidAPI_KEY:  TRANSLATE_RapidAPI_KEY,
+		TRANSLATE_RapidAPI_HOST: TRANSLATE_RapidAPI_HOST,
+		TRANSLATE_RapidAPI_URI:  TRANSLATE_RapidAPI_URI,
 	}
 }
 
@@ -41,5 +47,15 @@ func (ts *TranslateServiceImpl) LanguageCode(lang string) string {
 	}
 
 	return str.String()
+
+}
+
+func (ts *TranslateServiceImpl) DetectLanguage(sentece string) string {
+	// payload := strings.NewReader(fmt.Sprintf("q=%s",sentece))
+
+	// service.GetPost(sentece,)
+
+	return "Language not found"
+	// return str.String()
 
 }
