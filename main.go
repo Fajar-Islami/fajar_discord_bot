@@ -176,10 +176,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case command == "pong":
 			s.ChannelMessageSend(m.ChannelID, "Ping!")
 
+		// example command = !fb intro
+		case command == "intro":
+			s.ChannelMessageSend(m.ChannelID, "Fajar BOT V1.0.0\n Update Breaking Changes, check `!fb command` ")
+
 		// example command = !fb command
 		case command == "command":
 			res := service.ListCommand(botname[0])
-
 			s.ChannelMessageSend(m.ChannelID, res)
 
 		default:
