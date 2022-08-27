@@ -12,7 +12,7 @@ heroku:
 	git push heroku master
 
 herokuconfig:
-	cat .env | xargs heroku config:set
+	cat .env.prod | xargs heroku config:set
 
 exportconfig:
 	export $(cat .env.dev | xargs)
@@ -20,3 +20,6 @@ exportconfig:
 push:
 	git push
 	make heroku
+
+log:
+	heroku logs --tail
