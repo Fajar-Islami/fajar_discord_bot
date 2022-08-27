@@ -178,7 +178,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		// example command = !fb intro
 		case command == "intro":
-			s.ChannelMessageSend(m.ChannelID, "Fajar BOT V1.0.0\n Update Breaking Changes, check `!fb command` ")
+			s.ChannelMessageSend(m.ChannelID, "Fajar BOT V1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
 
 		// example command = !fb command
 		case command == "command":
