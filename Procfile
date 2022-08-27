@@ -1,1 +1,1 @@
-worker: bin/go_discord_bot
+worker: bin/fajar_discord_bot
