@@ -1,4 +1,4 @@
-module github.com/Fajar-Islami/go_discord_bot
+module github.com/Fajar-Islami/fajar_discord_bot
 
 go 1.18
 

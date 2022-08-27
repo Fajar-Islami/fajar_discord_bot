@@ -3,8 +3,8 @@ package jokes
 import (
 	"net/http"
 
-	"github.com/Fajar-Islami/go_discord_bot/helper"
-	"github.com/Fajar-Islami/go_discord_bot/service"
+	"github.com/Fajar-Islami/fajar_discord_bot/helper"
+	"github.com/Fajar-Islami/fajar_discord_bot/service"
 	"github.com/bwmarrin/discordgo"
 )
 

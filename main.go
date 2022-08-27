@@ -9,11 +9,11 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/Fajar-Islami/go_discord_bot/helper"
-	"github.com/Fajar-Islami/go_discord_bot/service"
-	"github.com/Fajar-Islami/go_discord_bot/service/jokes"
-	"github.com/Fajar-Islami/go_discord_bot/service/search"
-	"github.com/Fajar-Islami/go_discord_bot/service/translate"
+	"github.com/Fajar-Islami/fajar_discord_bot/helper"
+	"github.com/Fajar-Islami/fajar_discord_bot/service"
+	"github.com/Fajar-Islami/fajar_discord_bot/service/jokes"
+	"github.com/Fajar-Islami/fajar_discord_bot/service/search"
+	"github.com/Fajar-Islami/fajar_discord_bot/service/translate"
 	"github.com/bwmarrin/discordgo"
 	"github.com/spf13/viper"
 )
@@ -178,10 +178,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		// example command = !fb intro
 		case command == "intro":
-			s.ChannelMessageSend(m.ChannelID, "Fajar BOT V1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
+			s.ChannelMessageSend(m.ChannelID, "Fajar BOT v1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
 
-		// example command = !fb command
-		case command == "command":
+		// example command = !fb c ?>,m ommand
+		case command == "commands  ?>,m ":
 			res := service.ListCommand(botname[0])
 			s.ChannelMessageSend(m.ChannelID, res)
 

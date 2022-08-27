@@ -3,7 +3,7 @@ package translate
 import (
 	"strings"
 
-	"github.com/Fajar-Islami/go_discord_bot/data"
+	"github.com/Fajar-Islami/fajar_discord_bot/data"
 	"github.com/bwmarrin/discordgo"
 )
 
