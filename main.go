@@ -11,6 +11,9 @@ import (
 
 	"github.com/Fajar-Islami/go_discord_bot/helper"
 	"github.com/Fajar-Islami/go_discord_bot/service"
+	"github.com/Fajar-Islami/go_discord_bot/service/jokes"
+	"github.com/Fajar-Islami/go_discord_bot/service/search"
+	"github.com/Fajar-Islami/go_discord_bot/service/translate"
 	"github.com/bwmarrin/discordgo"
 	"github.com/spf13/viper"
 )
@@ -19,6 +22,8 @@ var (
 	BOT_TOKEN          string
 	JOKESBAPAKBAPAKURI string
 	ENVIRONMENT        string
+	PESTO_TOKEN        string
+	PESTO_URI          string
 )
 
 func init() {
@@ -42,11 +47,14 @@ func init() {
 		BOT_TOKEN = os.Getenv("BOT_TOKEN")
 		JOKESBAPAKBAPAKURI = os.Getenv("JOKESBAPAKBAPAKURI")
 		ENVIRONMENT = os.Getenv("ENVIRONMENT")
+		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
+		PESTO_URI = os.Getenv("PESTO_URI")
 	} else {
 		BOT_TOKEN = v.GetString("BOT_TOKEN")
 		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
 		ENVIRONMENT = v.GetString("ENVIRONMENT")
-
+		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
+		PESTO_URI = os.Getenv("PESTO_URI")
 	}
 
 }
@@ -95,65 +103,84 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	content := strings.Split(m.Content, ".")
+	translateService := translate.NewTranslateService(s, m)
+	jokesService := jokes.NewJokesService(s, m)
+	searchService := search.NewSearchService(s, m)
 
-	if (content[0] == "!fb" && ENVIRONMENT == "PROD") || (content[0] == "!fbdev" && ENVIRONMENT == "DEV") {
+	botname := strings.Split(m.Content, " ")
+
+	if (botname[0] == "!fb" && ENVIRONMENT == "PROD") || (botname[0] == "!fbdev" && ENVIRONMENT == "DEV") {
 		// fmt.Printf("Command from %s ENVIRONMENT\n", ENVIRONMENT)
 
-		command := content[1]
+		command := botname[1]
 
 		switch {
+
+		// example command = !fb jokes
 		case command == "jokes":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
-			resp := service.GetAPI(JOKESBAPAKBAPAKURI)
+			resBody, resp := jokesService.GetRandomJokes(JOKESBAPAKBAPAKURI)
 			defer resp.Body.Close()
-
-			respStruct := &helper.ResponseStruct{
-				StatusCode:         resp.StatusCode,
-				ExpectedStatusCode: 200,
-				Name:               "jokes-bapak2",
-				Filename:           "jokes-bapak2.png",
-				RespBody:           resp.Body,
-			}
-
-			err := helper.SuccessStatus(s, m, respStruct)
+			err := helper.ResponseImage(s, m, resBody)
 			if err != nil {
 				fmt.Println(err)
 			}
 
+		// example command = !fb rcelist
+		case command == "rcelist":
+			s.ChannelMessageSend(m.ChannelID, "[Link text](http://example.com)")
+
+		// example command = !fb env
 		case command == "env":
 			str := fmt.Sprintf("Hi!, i'm running on **%s environment**", ENVIRONMENT)
 			s.ChannelMessageSend(m.ChannelID, str)
 
+		// example command = !fb sholat
 		case command == "sholat":
 			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
 
+		// example command = !fb search
 		case command == "search":
-			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+			res := searchService.SearchText("anything")
+			s.ChannelMessageSendEmbeds(m.ChannelID, res)
 
+		// example command = !fb translate-langlist
+		case command == "translate-langlist":
+			str := translateService.LanguageList()
+			s.ChannelMessageSend(m.ChannelID, str)
+
+		// example command = !fb translate-codelang eng
+		case command == "translate-codelang":
+			if len(botname) < 3 {
+				s.ChannelMessageSend(m.ChannelID, "403 Bad request for language")
+				return
+			}
+
+			var lang = botname[2]
+
+			str := translateService.LanguageCode(lang)
+
+			s.ChannelMessageSend(m.ChannelID, str)
+
+		// example command = !fb translate-codelang eng
 		case command == "translate":
 			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
 
 		// If the message is "ping" reply with "Poing!"
+		// example command = !fb ping
 		case command == "ping":
 			s.ChannelMessageSend(m.ChannelID, "Pong!")
 
-			// If the message is "ping" reply with "Pong!"
+		// If the message is "ping" reply with "Pong!"
+		// example command = !fb pong
 		case command == "pong":
 			s.ChannelMessageSend(m.ChannelID, "Ping!")
 
+		// example command = !fb command
 		case command == "command":
-			var str strings.Builder
-			str.WriteString("Fajar Bot command list :\n")
-			str.WriteString(fmt.Sprint("- `", content[0], ".jokes` = Get single random joke\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".env`= check environment\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".sholat` = COMING SOON!!\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".search` = COMING SOON!!\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".translate` = COMING SOON!!\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".ping` = test ping\n"))
-			str.WriteString(fmt.Sprint("- `", content[0], ".pong` = test ping\n"))
+			res := service.ListCommand(botname[0])
 
-			s.ChannelMessageSend(m.ChannelID, str.String())
+			s.ChannelMessageSend(m.ChannelID, res)
 
 		default:
 			s.ChannelMessageSend(m.ChannelID, "**404** Command Not Found!")
