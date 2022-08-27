@@ -3,6 +3,8 @@
 Fajar BOT v1.0.0  
 Update Breaking Changes, check `!fb command` (no longer use dots for commands)
 
+> Welcome to join in and feel free to contribute
+
 <!-- > Source [link](https://dev.to/aurelievache/learning-go-by-examples-part-4-create-a-bot-for-discord-in-go-43cf) <!-->
 
 Click this [link](https://discord.com/oauth2/authorize?client_id=1010842038532583456&permissions=8&scope=bot) to add a bot to your server.
