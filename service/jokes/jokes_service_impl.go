@@ -28,7 +28,6 @@ func (js *JokesServiceImpl) GetRandomJokes(uri string) (*helper.ResponseImageStr
 
 	if err != nil {
 		log.Println(err)
-
 		return nil, nil, "Error Get Jokes"
 	}
 

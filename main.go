@@ -59,11 +59,11 @@ func init() {
 		BOT_TOKEN = v.GetString("BOT_TOKEN")
 		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
 		ENVIRONMENT = v.GetString("ENVIRONMENT")
-		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
-		PESTO_URI = os.Getenv("PESTO_URI")
-		TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
-		TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
-		TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
+		PESTO_TOKEN = v.GetString("PESTO_TOKEN")
+		PESTO_URI = v.GetString("PESTO_URI")
+		TRANSLATE_RapidAPI_KEY = v.GetString("TRANSLATE_RapidAPI_KEY")
+		TRANSLATE_RapidAPI_HOST = v.GetString("TRANSLATE_RapidAPI_HOST")
+		TRANSLATE_RapidAPI_URI = v.GetString("TRANSLATE_RapidAPI_URI")
 	}
 
 }
@@ -166,13 +166,26 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// example command = !fb translate-codelang eng
 		case command == "translate-codelang":
 			if len(botname) < 3 {
-				s.ChannelMessageSend(m.ChannelID, "403 Bad request for language")
+				s.ChannelMessageSend(m.ChannelID, "400 Bad request for language")
 				return
 			}
 
 			var lang = botname[2]
 
 			str := translateService.LanguageCode(lang)
+
+			s.ChannelMessageSend(m.ChannelID, str)
+
+		// example command = !fb translate-detectlang English is hard but
+		case command == "translate-detectlang":
+			if len(botname) < 3 {
+				s.ChannelMessageSend(m.ChannelID, "400 Bad request for language")
+				return
+			}
+
+			var sentences = botname[2]
+
+			str := translateService.DetectLanguage(sentences)
 
 			s.ChannelMessageSend(m.ChannelID, str)
 

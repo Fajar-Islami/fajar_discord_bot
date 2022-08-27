@@ -1,7 +1,9 @@
 package service
 
 import (
+	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -15,6 +17,13 @@ func Get(uri string) *Client {
 	r := new(Client)
 
 	return r.Request("GET", uri, nil)
+}
+
+func Post(uri string, body io.Reader) *Client {
+	r := new(Client)
+	fmt.Println("body", body)
+
+	return r.Request("POST", uri, body)
 }
 
 // Header add header
@@ -41,6 +50,7 @@ func (c *Client) Do() (response *http.Response, err error) {
 	httpClient := http.DefaultClient
 
 	response, err = httpClient.Do(c.req)
+	log.Printf("Address : %s \nMethod : %s \nURL : %s \nRequest Body : %s \n", c.req.RemoteAddr, c.req.Method, c.req.URL, c.req.Body)
 
 	return response, err
 }
