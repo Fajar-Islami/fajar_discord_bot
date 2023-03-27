@@ -105,6 +105,11 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	defer func() {
+		if r := recover(); r != nil {
+			s.ChannelMessageSend(m.ChannelID, "Oh no, something went wrong with me! Can you guys help me to ping my masters? @FajarIslami#8186")
+		}
+	}()
 
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
@@ -113,7 +118,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	translateService := translate.NewTranslateService(s, m, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI)
-	jokesService := jokes.NewJokesService(s, m)
+	jokesService := jokes.NewJokesService(s, m, JOKESBAPAKBAPAKURI)
 	searchService := search.NewSearchService(s, m)
 
 	botname := strings.Split(m.Content, " ")
@@ -128,7 +133,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// example command = !fb jokes
 		case command == "jokes":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
-			resBody, resp, errGet := jokesService.GetRandomJokes(JOKESBAPAKBAPAKURI)
+			resBody, resp, errGet := jokesService.GetRandomJokes()
 
 			if errGet != "" {
 				s.ChannelMessageSend(m.ChannelID, errGet)
@@ -137,7 +142,25 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			defer resp.Body.Close()
 			err := helper.ResponseImage(s, m, resBody)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
+				s.ChannelMessageSend(m.ChannelID, err.Error())
+			}
+
+		case command == "joktod":
+			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
+			resBody, resp, errGet := jokesService.GetRandomJokesToday()
+
+			if errGet != "" {
+				s.ChannelMessageSend(m.ChannelID, errGet)
+				return
+			}
+
+			defer resp.Body.Close()
+
+			err := helper.ResponseImage(s, m, resBody)
+			if err != nil {
+				log.Println(err)
+				s.ChannelMessageSend(m.ChannelID, err.Error())
 			}
 
 		// example command = !fb rcelist

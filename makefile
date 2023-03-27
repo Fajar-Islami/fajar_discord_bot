@@ -1,8 +1,7 @@
 compile:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app
 		
-run:
-	make exportconfig
+run: exportconfig
 	GOFLAGS=-mod=mod go run main.go
 
 bot:
@@ -15,7 +14,7 @@ herokuconfig:
 	cat .env.prod | xargs heroku config:set
 
 exportconfig:
-	export $(cat .env.dev | xargs)
+	export $(cat .env | xargs)
 
 push:
 	git push

@@ -16,6 +16,7 @@ Click this [link](https://discord.com/oauth2/authorize?client_id=101084203853258
 - [ ] Al-Qur'an
 - [ ] Search Engine
 - [ ] Translate
+- [ ] Migrate from Heroku to fly.io
 
 ## List Commands
 

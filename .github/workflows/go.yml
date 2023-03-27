@@ -19,6 +19,3 @@ jobs:
 
       - name: Golang Build
         run: make compile
-
-      # - name: Update heroku
-      #   run: make heroku
