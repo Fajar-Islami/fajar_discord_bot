@@ -11,6 +11,7 @@ import (
 
 	"github.com/Fajar-Islami/fajar_discord_bot/helper"
 	"github.com/Fajar-Islami/fajar_discord_bot/service"
+	"github.com/Fajar-Islami/fajar_discord_bot/service/ai"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/jokes"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/search"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/translate"
@@ -27,6 +28,7 @@ var (
 	TRANSLATE_RapidAPI_KEY  string
 	TRANSLATE_RapidAPI_HOST string
 	TRANSLATE_RapidAPI_URI  string
+	WRITESONIC_APIKEY       string
 )
 
 func init() {
@@ -55,6 +57,7 @@ func init() {
 		TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
 		TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
 		TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
+		WRITESONIC_APIKEY = os.Getenv("WRITESONIC_APIKEY")
 	} else {
 		BOT_TOKEN = v.GetString("BOT_TOKEN")
 		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
@@ -64,6 +67,7 @@ func init() {
 		TRANSLATE_RapidAPI_KEY = v.GetString("TRANSLATE_RapidAPI_KEY")
 		TRANSLATE_RapidAPI_HOST = v.GetString("TRANSLATE_RapidAPI_HOST")
 		TRANSLATE_RapidAPI_URI = v.GetString("TRANSLATE_RapidAPI_URI")
+		WRITESONIC_APIKEY = v.GetString("WRITESONIC_APIKEY")
 	}
 
 }
@@ -119,6 +123,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	translateService := translate.NewTranslateService(s, m, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI)
 	jokesService := jokes.NewJokesService(s, m, JOKESBAPAKBAPAKURI)
+	aiService := ai.NewAIBot(s, m, WRITESONIC_APIKEY)
 	searchService := search.NewSearchService(s, m)
 
 	botname := strings.Split(m.Content, " ")
@@ -137,6 +142,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			if errGet != "" {
 				s.ChannelMessageSend(m.ChannelID, errGet)
+				return
 			}
 
 			defer resp.Body.Close()
@@ -146,6 +152,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				s.ChannelMessageSend(m.ChannelID, err.Error())
 			}
 
+		// example command = !fb joktod
 		case command == "joktod":
 			//Call the JOKESBAPAKBAPAKURI API and retrieve our jokes
 			resBody, resp, errGet := jokesService.GetRandomJokesToday()
@@ -162,6 +169,18 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				log.Println(err)
 				s.ChannelMessageSend(m.ChannelID, err.Error())
 			}
+
+		// example command = !fb search=<text you want to search>
+		case strings.Contains(command, "search="):
+			searchStr := strings.Split(command, "=")
+
+			if searchStr[1] == "" {
+				s.ChannelMessageSend(m.ChannelID, "Invliad search text")
+				return
+			}
+
+			resp := aiService.SearchBot(searchStr[1])
+			s.ChannelMessageSend(m.ChannelID, resp)
 
 		// example command = !fb rcelist
 		case command == "rcelist":

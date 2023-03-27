@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -21,7 +20,6 @@ func Get(uri string) *Client {
 
 func Post(uri string, body io.Reader) *Client {
 	r := new(Client)
-	fmt.Println("body", body)
 
 	return r.Request("POST", uri, body)
 }
