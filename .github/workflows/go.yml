@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build Binary and Docker Image
+  build-binary:
+    name: Build Binary
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,16 +20,20 @@ jobs:
       - name: Build Binary
         run: make compile
 
-      - name: Build image
-        run: make dockerbuild
+  build-image:
+    name: Build Binary and Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        
+  
   deploy:
     name: Deploy app
     needs:
-      - build
+      - build-binary
+      - build-image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
