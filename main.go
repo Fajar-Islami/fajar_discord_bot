@@ -172,14 +172,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		// example command = !fb search=<text you want to search>
 		case strings.Contains(command, "search="):
-			searchStr := strings.Split(command, "=")
+			content := strings.Join(botname[1:], " ")
+			fmt.Println("content", content)
+			searchArr := strings.Split(content, "=")[1:]
+			searchStr := strings.Join(searchArr, "")
 
-			if searchStr[1] == "" {
+			if searchStr == "" {
 				s.ChannelMessageSend(m.ChannelID, "Invliad search text")
 				return
 			}
 
-			resp := aiService.SearchBot(searchStr[1])
+			resp := aiService.SearchBot(searchStr)
 			s.ChannelMessageSend(m.ChannelID, resp)
 
 		// example command = !fb rcelist
