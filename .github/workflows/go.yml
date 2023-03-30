@@ -2,9 +2,9 @@ name: Fajar Discord Bot
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -22,6 +22,8 @@ jobs:
 
   deploy:
     name: Deploy app
+    needs:
+      - build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
