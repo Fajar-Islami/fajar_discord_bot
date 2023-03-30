@@ -36,3 +36,4 @@ Click this [link](https://discord.com/oauth2/authorize?client_id=101084203853258
 ```bash
 curl https://discordapp.com/api/v7/gateway/bot -H "Authorization: Bot <token>"
 ```
+aa
