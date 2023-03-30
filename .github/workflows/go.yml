@@ -1,5 +1,4 @@
 name: Fajar Discord Bot
-
 on:
   workflow_dispatch:
   push:
@@ -8,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: Build Binary and Docker Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,9 +17,9 @@ jobs:
         with:
           go-version: 1.18
 
-      - name: Golang Build
-        run: make compile
-  
+      - name: Build Binary
+        run: make build
+        
   # deploy:
   #   name: Deploy app
   #   needs:
