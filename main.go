@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -16,7 +15,7 @@ import (
 	"github.com/Fajar-Islami/fajar_discord_bot/service/search"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/translate"
 	"github.com/bwmarrin/discordgo"
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -32,43 +31,21 @@ var (
 )
 
 func init() {
-	v := viper.New()
-
-	v.SetConfigFile(".env")
-	pathDir, err := os.Executable()
+	err := godotenv.Load(".env")
 	if err != nil {
-		log.Println("pathDir", err)
+		log.Println("err read env file : ", err)
 	}
-	dir := filepath.Dir(pathDir)
-	v.AddConfigPath(dir)
 
-	// Tell viper to automatically override values that it has read from config file
-	// with the values of the corresponding environment variables if they exist.
-	viper.AutomaticEnv()
-	v.BindEnv("TMP")
-
-	if err := v.ReadInConfig(); err != nil {
-		log.Println("ReadInConfig", err)
-		BOT_TOKEN = os.Getenv("BOT_TOKEN")
-		JOKESBAPAKBAPAKURI = os.Getenv("JOKESBAPAKBAPAKURI")
-		ENVIRONMENT = os.Getenv("ENVIRONMENT")
-		PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
-		PESTO_URI = os.Getenv("PESTO_URI")
-		TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
-		TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
-		TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
-		WRITESONIC_APIKEY = os.Getenv("WRITESONIC_APIKEY")
-	} else {
-		BOT_TOKEN = v.GetString("BOT_TOKEN")
-		JOKESBAPAKBAPAKURI = v.GetString("JOKESBAPAKBAPAKURI")
-		ENVIRONMENT = v.GetString("ENVIRONMENT")
-		PESTO_TOKEN = v.GetString("PESTO_TOKEN")
-		PESTO_URI = v.GetString("PESTO_URI")
-		TRANSLATE_RapidAPI_KEY = v.GetString("TRANSLATE_RapidAPI_KEY")
-		TRANSLATE_RapidAPI_HOST = v.GetString("TRANSLATE_RapidAPI_HOST")
-		TRANSLATE_RapidAPI_URI = v.GetString("TRANSLATE_RapidAPI_URI")
-		WRITESONIC_APIKEY = v.GetString("WRITESONIC_APIKEY")
-	}
+	log.Println("ReadInConfig", err)
+	BOT_TOKEN = os.Getenv("BOT_TOKEN")
+	JOKESBAPAKBAPAKURI = os.Getenv("JOKESBAPAKBAPAKURI")
+	ENVIRONMENT = os.Getenv("ENVIRONMENT")
+	PESTO_TOKEN = os.Getenv("PESTO_TOKEN")
+	PESTO_URI = os.Getenv("PESTO_URI")
+	TRANSLATE_RapidAPI_KEY = os.Getenv("TRANSLATE_RapidAPI_KEY")
+	TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
+	TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
+	WRITESONIC_APIKEY = os.Getenv("WRITESONIC_APIKEY")
 
 }
 

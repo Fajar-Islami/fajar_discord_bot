@@ -1,5 +1,5 @@
 compile:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app
+	go build -o bin/app
 		
 run: exportconfig
 	GOFLAGS=-mod=mod go run main.go

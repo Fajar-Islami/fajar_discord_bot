@@ -31,3 +31,8 @@ Click this [link](https://discord.com/oauth2/authorize?client_id=101084203853258
 - `!fb pong` = test ping.
 - `!fb intro` = About this bot.
 - `!fb contribute` = Link Repository.
+
+## How to check if bot token is valid
+```bash
+curl https://discordapp.com/api/v7/gateway/bot -H "Authorization: Bot <token>"
+```

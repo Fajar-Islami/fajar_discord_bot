@@ -19,7 +19,7 @@ jobs:
 
       - name: Golang Build
         run: make compile
-
+  
   deploy:
     name: Deploy app
     needs:
