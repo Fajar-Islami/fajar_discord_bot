@@ -21,7 +21,7 @@ jobs:
         run: make compile
 
   build-image:
-    name: Build Binary and Docker Image
+    name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
