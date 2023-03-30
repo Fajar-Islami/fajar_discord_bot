@@ -1,3 +1,8 @@
+registry:=ghcr.io
+username:=fajar-islami
+image:=fajar_discord_bot
+tags:=latest
+
 compile:
 	go build -o bin/app
 		
@@ -22,3 +27,7 @@ push:
 
 log:
 	heroku logs --tail
+
+dockerbuild:
+	docker build --rm -t ${registry}/${username}/${image}:${tags} .
+	docker image prune --filter label=stage=dockerbuilder -f
