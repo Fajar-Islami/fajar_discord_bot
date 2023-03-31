@@ -100,12 +100,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	translateService := translate.NewTranslateService(s, m, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI)
 	jokesService := jokes.NewJokesService(s, m, JOKESBAPAKBAPAKURI)
-	aiService := ai.NewAIBot(s, m, WRITESONIC_APIKEY)
+	aiService := ai.NewAIBot(WRITESONIC_APIKEY)
 	searchService := search.NewSearchService(s, m)
 
 	botname := strings.Split(m.Content, " ")
 
-	if (botname[0] == "!fb" && ENVIRONMENT == "PROD") || (botname[0] == "!fbdev" && ENVIRONMENT == "DEV") {
+	if (botname[0] == "!fb" && ENVIRONMENT == "PROD") || (botname[0] == "!devfb" && ENVIRONMENT == "DEV") {
 		// fmt.Printf("Command from %s ENVIRONMENT\n", ENVIRONMENT)
 
 		command := botname[1]
@@ -150,12 +150,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		// example command = !fb search=<text you want to search>
 		case strings.Contains(command, "search="):
 			content := strings.Join(botname[1:], " ")
-			fmt.Println("content", content)
+
 			searchArr := strings.Split(content, "=")[1:]
 			searchStr := strings.Join(searchArr, "")
 
 			if searchStr == "" {
-				s.ChannelMessageSend(m.ChannelID, "Invliad search text")
+				s.ChannelMessageSend(m.ChannelID, "Invalid search text")
 				return
 			}
 

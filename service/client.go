@@ -47,8 +47,16 @@ func (c *Client) Do() (response *http.Response, err error) {
 
 	httpClient := http.DefaultClient
 
+	log.Printf("Address : %s \nMethod : %s \nURL : %s \nRequest Header : %v \nRequest Body : %s \n", c.req.RemoteAddr, c.req.Method, c.req.URL, c.req.Header, c.req.Body)
+
+	// var mapInterface map[string]any
+	// err = json.Unmarshal( c.req.Body, mapInterface)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return "Error Marshal SearchBot AI"
+	// }
+
 	response, err = httpClient.Do(c.req)
-	log.Printf("Address : %s \nMethod : %s \nURL : %s \nRequest Body : %s \n", c.req.RemoteAddr, c.req.Method, c.req.URL, c.req.Body)
 
 	return response, err
 }
