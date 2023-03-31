@@ -148,7 +148,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 
 		// example command = !fb search=<text you want to search>
-		case strings.Contains(command, "search="):
+		case strings.Contains(command, "ai="):
 			content := strings.Join(botname[1:], " ")
 
 			searchArr := strings.Split(content, "=")[1:]
