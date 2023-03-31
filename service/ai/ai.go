@@ -59,6 +59,8 @@ func (ai *AIBotImpl) SearchBot(text string) string {
 		return "Error Read Search Bot Body"
 	}
 
+	fmt.Println("response body : ", string(body))
+
 	// jsonString := `{
 	// 	"message": "Google adalah sebuah perusahaan multinasional Amerika Serikat yang berfokus pada jasa dan produk Internet, terutama mesin pencari. Google didirikan pada tahun 1998 oleh Larry Page dan Sergey Brin. Misi utama dari Google adalah untuk mengumpulkan informasi dunia dan membuatnya dapat diakses dan bermanfaat oleh semua orang. Google menyediakan berbagai layanan dan produk online seperti email, browser web, perangkat lunak produktivitas, ponsel dan aplikasi, alat pemetaan, e-book, iklan internet, serta berbagai video dan situs jejaring sosial. Google adalah perusahaan mesin pencari terbesar di dunia dan mengoperasikan lebih dari satu juta server di beberapa pusat data di seluruh dunia [1][2][3].<br/><br/><b>References:</b><br/><span>[1] <a href='https://id.wikipedia.org/wiki/Google' target='_blank' class='text-purple-1 underline'>Google - Wikipedia bahasa Indonesia, ensiklopedia bebas</a></span><br/><span>[2] <a href='https://www.idn.id/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar/' target='_blank' class='text-purple-1 underline'>Pengertian, Sejarah, dan Fungsi Google sebagai Search ...</a></span><br/><span>[3] <a href='https://kumparan.com/berita-update/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar-1wwPN1SYZo1' target='_blank' class='text-purple-1 underline'>Pengertian, Sejarah, dan Fungsi Google sebagai Search ...</a></span><br/> [Link text](https://www.idn.id/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar/)",
 	// 	"image_urls": []
@@ -70,6 +72,10 @@ func (ai *AIBotImpl) SearchBot(text string) string {
 		log.Println(err)
 		log.Println("body = ", string(body))
 		return fmt.Sprintf("Error UnMarshal SearchBot AI Res Body : %s \n\n", err)
+	}
+
+	if r.Detail != "" {
+		return r.Detail
 	}
 
 	// return r["message"].(string)

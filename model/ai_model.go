@@ -7,6 +7,7 @@ type AIReq struct {
 }
 
 type AIRes struct {
-	Message   string        `json:"message"`
-	ImageUrls []interface{} `json:"image_urls"`
+	Message   string        `json:"message,omitempty"`
+	Detail    string        `json:"detail,omitempty"`
+	ImageUrls []interface{} `json:"image_urls,omitempty"`
 }
