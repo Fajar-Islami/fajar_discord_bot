@@ -1,0 +1,13 @@
+services:
+  discord-bot:
+    build: .
+    image: ghcr.io/fajar-islami/fajar_discord_bot
+    container_name: fajar_discord_bot
+    networks:
+      - discord-bot
+    env_file:
+      - .env
+    restart: on-failure
+  
+networks:
+  discord-bot: {}
