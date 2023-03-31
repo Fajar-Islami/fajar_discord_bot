@@ -28,7 +28,6 @@ func NewAIBot(APIKEY string) AIBot {
 }
 
 func (ai *AIBotImpl) SearchBot(text string) string {
-	log.Println("Searching ", text)
 	reqBody := model.AIReq{
 		EnableGoogleResults: true,
 		EnableMemory:        true,
@@ -61,8 +60,26 @@ func (ai *AIBotImpl) SearchBot(text string) string {
 
 	fmt.Println("response body : ", string(body))
 
+	// @@TODO : for response code
+	// if strings.Contains(fmt.Sprint(body), "\\n\\n`") {
+	// 	var resp map[string]any
+	// 	err = json.Unmarshal(body, &resp)
+	// 	if err != nil {
+	// 		log.Println(err)
+	// 		log.Println("body = ", string(body))
+	// 		return fmt.Sprintf("Error UnMarshal SearchBot AI Res Body : %s \n\n", err)
+	// 	}
+
+	// 	return resp["message"].(string)
+
+	// }
+
 	// jsonString := `{
-	// 	"message": "Google adalah sebuah perusahaan multinasional Amerika Serikat yang berfokus pada jasa dan produk Internet, terutama mesin pencari. Google didirikan pada tahun 1998 oleh Larry Page dan Sergey Brin. Misi utama dari Google adalah untuk mengumpulkan informasi dunia dan membuatnya dapat diakses dan bermanfaat oleh semua orang. Google menyediakan berbagai layanan dan produk online seperti email, browser web, perangkat lunak produktivitas, ponsel dan aplikasi, alat pemetaan, e-book, iklan internet, serta berbagai video dan situs jejaring sosial. Google adalah perusahaan mesin pencari terbesar di dunia dan mengoperasikan lebih dari satu juta server di beberapa pusat data di seluruh dunia [1][2][3].<br/><br/><b>References:</b><br/><span>[1] <a href='https://id.wikipedia.org/wiki/Google' target='_blank' class='text-purple-1 underline'>Google - Wikipedia bahasa Indonesia, ensiklopedia bebas</a></span><br/><span>[2] <a href='https://www.idn.id/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar/' target='_blank' class='text-purple-1 underline'>Pengertian, Sejarah, dan Fungsi Google sebagai Search ...</a></span><br/><span>[3] <a href='https://kumparan.com/berita-update/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar-1wwPN1SYZo1' target='_blank' class='text-purple-1 underline'>Pengertian, Sejarah, dan Fungsi Google sebagai Search ...</a></span><br/> [Link text](https://www.idn.id/pengertian-sejarah-dan-fungsi-google-sebagai-search-engine-terbesar/)",
+	//     "message": "Berikut adalah contoh program \"Hello, World!\" yang sederhana menggunakan bahasa pemrograman Go:\n\n```go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, World!\")\n}\n```\n\nPenjelasan kode di atas:\n\n1. Baris pertama merupakan sebuah deklarasi package. `package main` menyatakan bahwa file tersebut merupakan sebuah executable program, bukan sebuah library.\n2. Baris kedua mengimpor package `fmt`, yang menyediakan fungsi-fungsi untuk formatting dan output.\n3. Baris ketiga mendefinisikan fungsi `main`. Setiap program Go selalu dimulai dari fungsi `main`.\n4. Baris keempat mencetak string \"Hello, World!\" ke console menggunakan fungsi `Println` dari package `fmt`.\n\nUntuk menjalankan program di atas, Anda dapat melakukan hal berikut ini:\n\n1. Simpan kode di atas ke dalam file dengan nama `main.go`.\n2. Buka command prompt atau terminal di direktori yang sama dengan file `main.go`.\n3. Ketikkan perintah `go run main.go` untuk menjalankan program.\n\nProgram akan menampilkan output \"Hello, World!\" di console.",
+	//     "image_urls": []
+	// }`
+	// jsonString := `{
+	// 	"message": "Berikut adalah contoh program \"Hello, World!\" yang sederhana menggunakan bahasa pemrograman Go:\n\n\"\"\"go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, World!\")\n}\n\"\"\"\n\nPenjelasan kode di atas:\n\n1. Baris pertama merupakan sebuah deklarasi package. `package main` menyatakan bahwa file tersebut merupakan sebuah executable program, bukan sebuah library.\n2. Baris kedua mengimpor package `fmt`, yang menyediakan fungsi-fungsi untuk formatting dan output.\n3. Baris ketiga mendefinisikan fungsi `main`. Setiap program Go selalu dimulai dari fungsi `main`.\n4. Baris keempat mencetak string \"Hello, World!\" ke console menggunakan fungsi `Println` dari package `fmt`.\n\nUntuk menjalankan program di atas, Anda dapat melakukan hal berikut ini:\n\n1. Simpan kode di atas ke dalam file dengan nama `main.go`.\n2. Buka command prompt atau terminal di direktori yang sama dengan file `main.go`.\n3. Ketikkan perintah `go run main.go` untuk menjalankan program.\n\nProgram akan menampilkan output \"Hello, World!\" di console.",
 	// 	"image_urls": []
 	// }`
 	// var body = []byte(jsonString)
@@ -87,6 +104,10 @@ func (ai *AIBotImpl) SearchBot(text string) string {
 
 	var builder strings.Builder
 	builder.WriteString(strSplit[0] + "\n\n")
+	// builder.WriteString(strSplit[0] + "\n\n")
+	// // str := "```PHP\n// Contoh kode PHP Swoole\n<?php\n$server = new Swoole\\Http\\Server(\"127.0.0.1\", 9501);\n\n$server->on(\"Start\", function ($server) {\n echo \"Server started\\n\";\n});\n\n$server->on(\"Request\", function ($request, $response) {\n $response->header(\"Content-Type\", \"text/plain\");\n $response->end(\"Hello World\\n\");\n});\n\necho \"Server is starting...\\n\";\n\n$server->start();\n```"
+
+	// str := "```PHP\n// Contoh kode PHP Swoole\n<?php\n$server = new Swoole\\Http\\Server(\"127.0.0.1\", 9501);\n\n$server->on(\"Start\", function ($server) {\n echo \"Server started\\n\";\n});\n\n$server->on(\"Request\", function ($request, $response) {\n $response->header(\"Content-Type\", \"text/plain\");\n $response->end(\"Hello World\\n\");\n});\n\necho \"Server is starting...\\n\";\n\n$server->start();\n```"
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(r.Message))
 	if err != nil {
