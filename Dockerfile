@@ -10,6 +10,6 @@ RUN go build -o fajar-discord-bot
 FROM alpine:latest
 
 RUN mkdir bin
-COPY --from=build /app/fajar-discord-bot /app/bin/fajar-discord-bot
+COPY --from=build /app/fajar-discord-bot /app/fajar-discord-bot
 
-ENTRYPOINT [ "/app/bin/fajar-discord-bot" ]
+ENTRYPOINT [ "/app/fajar-discord-bot" ]
