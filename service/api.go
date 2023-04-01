@@ -5,20 +5,13 @@ import (
 	"strings"
 )
 
-// func GetAPI(uri string) (response *http.Response) {
-// 	response, err := http.Get(uri)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	return
-// }
 
 func ListCommand(botname string) string {
 	var str strings.Builder
 	str.WriteString("Fajar Bot command list :\n")
 	str.WriteString(fmt.Sprint("- `", botname, " jokes` = Get one random joke. \n"))
 	str.WriteString(fmt.Sprint("- `", botname, " joktod` = Get today's joke. \n"))
-	str.WriteString(fmt.Sprint("- `", botname, " ai=<text you want to search>` = Data search using AI. (LIMIT 10K WORDS/MONTH) \n"))
+	str.WriteString(fmt.Sprint("- `", botname, " ai=<text you want to search>` = Data search using AI. (LIMIT 5K WORDS/MONTH) \n"))
 	// str.WriteString(fmt.Sprint("- `", botname, " rcelist` = List Programming Language\n"))
 	str.WriteString(fmt.Sprint("- `", botname, " env`= Check environment\n"))
 	str.WriteString(fmt.Sprint("- `", botname, " sholat` = COMING SOON!!\n"))
