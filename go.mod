@@ -2,7 +2,7 @@ module github.com/Fajar-Islami/fajar_discord_bot
 
 go 1.21
 
-toolchain go1.21.5
+// toolchain go1.21.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
