@@ -10,7 +10,7 @@ import (
 
 	"github.com/Fajar-Islami/fajar_discord_bot/helper"
 	"github.com/Fajar-Islami/fajar_discord_bot/service"
-	"github.com/Fajar-Islami/fajar_discord_bot/service/ai"
+	"github.com/Fajar-Islami/fajar_discord_bot/service/gemini"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/jokes"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/search"
 	"github.com/Fajar-Islami/fajar_discord_bot/service/translate"
@@ -28,6 +28,7 @@ var (
 	TRANSLATE_RapidAPI_HOST string
 	TRANSLATE_RapidAPI_URI  string
 	WRITESONIC_APIKEY       string
+	GOOGLE_GEMINI           string
 )
 
 func init() {
@@ -46,9 +47,10 @@ func init() {
 	TRANSLATE_RapidAPI_HOST = os.Getenv("TRANSLATE_RapidAPI_HOST")
 	TRANSLATE_RapidAPI_URI = os.Getenv("TRANSLATE_RapidAPI_URI")
 	WRITESONIC_APIKEY = os.Getenv("WRITESONIC_APIKEY")
-
+	GOOGLE_GEMINI = os.Getenv("GOOGLE_GEMINI")
 }
 
+// TODO USE HTTP FOR BLOCKING, NOT SIGNAL NOTIFY
 func main() {
 
 	// Create a new Discord session using the provided bot token
@@ -100,7 +102,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	translateService := translate.NewTranslateService(s, m, TRANSLATE_RapidAPI_KEY, TRANSLATE_RapidAPI_HOST, TRANSLATE_RapidAPI_URI)
 	jokesService := jokes.NewJokesService(s, m, JOKESBAPAKBAPAKURI)
-	aiService := ai.NewAIBot(WRITESONIC_APIKEY)
+	geminiService := gemini.NewAIGemini(GOOGLE_GEMINI)
+	// aiService := ai.NewAIBot(WRITESONIC_APIKEY)
 	searchService := search.NewSearchService(s, m)
 
 	botname := strings.Split(m.Content, " ")
@@ -159,7 +162,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				return
 			}
 
-			resp := aiService.SearchBot(searchStr)
+			// resp := aiService.SearchBot(searchStr)
+			resp := geminiService.GenerateText(searchStr)
 			s.ChannelMessageSend(m.ChannelID, resp)
 
 		// example command = !fb rcelist
