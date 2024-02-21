@@ -36,7 +36,7 @@ func (a *AIGeminiImpl) GenerateText(search string) (result string) {
 
 	// For text-only input, use the gemini-pro model
 	model := a.client.GenerativeModel("gemini-pro")
-	resp, err := model.GenerateContent(ctx, genai.Text("Cerita tentang marcos."))
+	resp, err := model.GenerateContent(ctx, genai.Text(search))
 	if err != nil {
 		log.Fatal(err)
 		result = "FAILED TO GET DATA"
