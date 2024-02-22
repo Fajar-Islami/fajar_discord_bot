@@ -1,5 +1,4 @@
 app = 'fajar-discord-bot'
-primary_region = 'iad'
 
 [build]
   [build.args]
