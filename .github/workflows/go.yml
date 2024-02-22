@@ -20,14 +20,14 @@ jobs:
       - name: Build Binary
         run: make compile
 
-  build-image:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # build-image:
+  #   name: Build Docker Image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
   
   deploy:
     name: Deploy app
