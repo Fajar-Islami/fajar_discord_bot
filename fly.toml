@@ -1,7 +1,9 @@
-# fly.toml file generated for fajar-discord-bot on 2023-03-30T16:48:53+07:00
+# fly.toml app configuration file generated for fajar-discord-bot on 2024-02-22T14:51:30+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "fajar-discord-bot"
-kill_signal = "SIGINT"
-kill_timeout = 5
-primary_region = "sin"
-processes = []
+app = 'fajar-discord-bot'
+primary_region = 'sin'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
