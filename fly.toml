@@ -1,18 +1,19 @@
-# fly.toml app configuration file generated for fajar-discord-bot-sparkling-dawn-6696 on 2024-02-22T10:01:11+07:00
+# fly.toml app configuration file generated for fajar-discord-bot on 2024-02-22T11:13:28+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'fajar-discord-bot-sparkling-dawn-6696'
+app = 'fajar-discord-bot'
 primary_region = 'sin'
 
 [build]
 
 [http_service]
-  internal_port = 8888
+  internal_port = 8080
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
+  min_machines_running = 0
   processes = ['app']
 
 [[vm]]
