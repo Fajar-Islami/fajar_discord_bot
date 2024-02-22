@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
-	"os/signal"
 	"strings"
-	"syscall"
 
 	"github.com/Fajar-Islami/fajar_discord_bot/helper"
 	"github.com/Fajar-Islami/fajar_discord_bot/service"
@@ -76,13 +75,28 @@ func main() {
 	// Wait here untul CTRC-C or other term sign is received.
 	fmt.Printf("Bot is now running on %s environtment. Press CTRL+C to exit\n", ENVIRONMENT)
 
-	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
-	<-sc
+	// sc := make(chan os.Signal, 1)
+	// signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	// <-sc
 
-	// Cleanly  close down the Discord session
-	dg.Close()
+	// // Cleanly  close down the Discord session
+	// dg.Close()
 
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler)
+	mux.HandleFunc("/health", handler)
+
+	port := os.Getenv("PORT")
+	log.Printf("Apps running on port %s \n", port)
+	if err := http.ListenAndServe(port, &http.ServeMux{}); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	log.Println("hello world")
+	fmt.Fprintf(w, "OK")
 }
 
 // This function will be called (due to AddHandler above) every time a new

@@ -1,7 +1,20 @@
-# fly.toml file generated for fajar-discord-bot on 2023-03-30T16:48:53+07:00
+app = 'fajar-discord-bot'
+primary_region = 'iad'
 
-app = "fajar-discord-bot"
-kill_signal = "SIGINT"
-kill_timeout = 5
-primary_region = "sin"
-processes = []
+[build]
+  [build.args]
+    GO_VERSION = '1.21.5'
+
+[env]
+
+[http_service]
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256
