@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Fajar-Islami/fajar_discord_bot/helper"
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
 )
 
 type AIGemini interface {
-	GenerateText(search string) string
+	GenerateText(search string) []string
 }
 
 type AIGeminiImpl struct {
@@ -30,7 +31,7 @@ func NewAIGemini(apikey string) AIGemini {
 	return &AIGeminiImpl{client: client}
 }
 
-func (a *AIGeminiImpl) GenerateText(search string) (result string) {
+func (a *AIGeminiImpl) GenerateText(search string) (result []string) {
 	ctx := context.Background()
 	fmt.Println("search", search)
 
@@ -39,15 +40,25 @@ func (a *AIGeminiImpl) GenerateText(search string) (result string) {
 	resp, err := model.GenerateContent(ctx, genai.Text(search))
 	if err != nil {
 		log.Fatal(err)
-		result = "FAILED TO GET DATA"
+		result = append(result, "FAILED TO GET DATA")
 		fmt.Println("result", result)
 		return
 	}
 
+	var tempText string
 	for _, v := range resp.Candidates {
+		// var textTemp string
 		for _, parts := range v.Content.Parts {
-			result += fmt.Sprintf("%v", parts)
+			tempText += fmt.Sprint(parts)
 		}
+	}
+
+	fmt.Println("tempText", tempText)
+	fmt.Println("======")
+
+	splittedText := helper.SplitText([]byte(tempText), 1800)
+	for _, v := range splittedText {
+		result = append(result, string(v))
 	}
 
 	fmt.Println("result", result)

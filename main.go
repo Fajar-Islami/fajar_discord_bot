@@ -164,9 +164,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			// resp := aiService.SearchBot(searchStr)
 			resp := geminiService.GenerateText(searchStr)
-			_, err := s.ChannelMessageSend(m.ChannelID, resp)
-			if err != nil {
-				log.Println("error", err)
+
+			for _, v := range resp {
+				_, err := s.ChannelMessageSend(m.ChannelID, v)
+				if err != nil {
+					log.Println("error", err)
+				}
 			}
 
 		// example command = !fb rcelist
