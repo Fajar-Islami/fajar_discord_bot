@@ -164,30 +164,48 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			// resp := aiService.SearchBot(searchStr)
 			resp := geminiService.GenerateText(searchStr)
-			s.ChannelMessageSend(m.ChannelID, resp)
+			_, err := s.ChannelMessageSend(m.ChannelID, resp)
+			if err != nil {
+				log.Println("error", err)
+			}
 
 		// example command = !fb rcelist
 		case command == "rcelist":
-			s.ChannelMessageSend(m.ChannelID, "[Link text](http://example.com)")
+			_, err := s.ChannelMessageSend(m.ChannelID, "[Link text](http://example.com)")
+			if err != nil {
+				log.Println("command rcelist error", err)
+			}
 
 		// example command = !fb env
 		case command == "env":
 			str := fmt.Sprintf("Hi!, i'm running on **%s environment**", ENVIRONMENT)
-			s.ChannelMessageSend(m.ChannelID, str)
+			_, err := s.ChannelMessageSend(m.ChannelID, str)
+			if err != nil {
+				log.Println("command env error", err)
+			}
 
 		// example command = !fb sholat
 		case command == "sholat":
-			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+			_, err := s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+			if err != nil {
+				log.Println("command sholat error", err)
+			}
 
-		// example command = !fb search
+			// example command = !fb search
 		case command == "search":
 			res := searchService.SearchText("anything")
-			s.ChannelMessageSendEmbeds(m.ChannelID, res)
+			_, err := s.ChannelMessageSendEmbeds(m.ChannelID, res)
+			if err != nil {
+				log.Println("command search error", err)
+			}
 
 		// example command = !fb translate-langlist
 		case command == "translate-langlist":
 			str := translateService.LanguageList()
-			s.ChannelMessageSend(m.ChannelID, str)
+			_, err := s.ChannelMessageSend(m.ChannelID, str)
+			if err != nil {
+				log.Println("error", err)
+			}
 
 		// example command = !fb translate-codelang eng
 		case command == "translate-codelang":
@@ -200,7 +218,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			str := translateService.LanguageCode(lang)
 
-			s.ChannelMessageSend(m.ChannelID, str)
+			_, err := s.ChannelMessageSend(m.ChannelID, str)
+			if err != nil {
+				log.Println("command translate-codelang error", err)
+			}
 
 		// example command = !fb translate-detectlang English is hard but
 		case command == "translate-detectlang":
@@ -213,34 +234,55 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			str := translateService.DetectLanguage(sentences)
 
-			s.ChannelMessageSend(m.ChannelID, str)
+			_, err := s.ChannelMessageSend(m.ChannelID, str)
+			if err != nil {
+				log.Println("command translate-detectlang error", err)
+			}
 
 		// example command = !fb translate-codelang eng
 		case command == "translate":
-			s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+			_, err := s.ChannelMessageSend(m.ChannelID, "COMING SOON!!")
+			if err != nil {
+				log.Println("command translate error", err)
+			}
 
 		// If the message is "ping" reply with "Poing!"
 		// example command = !fb ping
 		case command == "ping":
-			s.ChannelMessageSend(m.ChannelID, "Pong!")
+			_, err := s.ChannelMessageSend(m.ChannelID, "Pong!")
+			if err != nil {
+				log.Println("command ping error", err)
+			}
 
 		// If the message is "ping" reply with "Pong!"
 		// example command = !fb pong
 		case command == "pong":
-			s.ChannelMessageSend(m.ChannelID, "Ping!")
+			_, err := s.ChannelMessageSend(m.ChannelID, "Ping!")
+			if err != nil {
+				log.Println("command pong error", err)
+			}
 
 		// example command = !fb intro
 		case command == "intro":
-			s.ChannelMessageSend(m.ChannelID, "Fajar BOT v1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
+			_, err := s.ChannelMessageSend(m.ChannelID, "Fajar BOT v1.0.0\n Update Breaking Changes, check `!fb command` (no longer use dots for commands) ")
+			if err != nil {
+				log.Println("command intro error", err)
+			}
 
 		// example command = !fb contribute
 		case command == "contribute":
-			s.ChannelMessageSend(m.ChannelID, "Feel free to contribute here https://github.com/Fajar-Islami/fajar_discord_bot")
+			_, err := s.ChannelMessageSend(m.ChannelID, "Feel free to contribute here https://github.com/Fajar-Islami/fajar_discord_bot")
+			if err != nil {
+				log.Println("command contribute error", err)
+			}
 
 		// example command = !fb commands
 		case command == "commands":
 			res := service.ListCommand(botname[0])
-			s.ChannelMessageSend(m.ChannelID, res)
+			_, err := s.ChannelMessageSend(m.ChannelID, res)
+			if err != nil {
+				log.Println("command commands error", err)
+			}
 
 		default:
 			s.ChannelMessageSend(m.ChannelID, "**404** Command Not Found!")
