@@ -39,8 +39,8 @@ func (a *AIGeminiImpl) GenerateText(search string) (result []string) {
 	model := a.client.GenerativeModel("gemini-pro")
 	resp, err := model.GenerateContent(ctx, genai.Text(search))
 	if err != nil {
-		log.Fatal(err)
-		result = append(result, "FAILED TO GET DATA")
+		log.Println("model.GenerateContent ", err)
+		result = append(result, "Maaf pertanyaan mu tidak baik untuk dijawab :)")
 		fmt.Println("result", result)
 		return
 	}

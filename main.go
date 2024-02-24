@@ -168,7 +168,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			for _, v := range resp {
 				_, err := s.ChannelMessageSend(m.ChannelID, v)
 				if err != nil {
-					log.Println("error", err)
+					log.Println("ai ChannelMessageSend error", err)
 				}
 			}
 
