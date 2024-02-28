@@ -38,12 +38,12 @@ func (a *AIGeminiImpl) GenerateText(search string) (result []string) {
 	// For text-only input, use the gemini-pro model
 	model := a.client.GenerativeModel("gemini-pro")
 	// configure the safety settings thresholds
-	model.SafetySettings = []*genai.SafetySetting{
-		{
-			Category:  genai.HarmCategoryUnspecified,
-			Threshold: genai.HarmBlockNone,
-		},
-	}
+	// model.SafetySettings = []*genai.SafetySetting{
+	// 	{
+	// 		Category:  genai.HarmCategoryDangerousContent,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// }
 
 	resp, err := model.GenerateContent(ctx, genai.Text(search))
 	if err != nil {
