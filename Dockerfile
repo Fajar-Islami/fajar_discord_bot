@@ -1,4 +1,4 @@
-FROM golang:alpine3.17 as build
+FROM golang:1.22.4-alpine as build
 LABEL stage=dockerbuilder
 
 WORKDIR /app

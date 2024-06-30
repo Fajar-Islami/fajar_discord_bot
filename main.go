@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
@@ -16,6 +19,8 @@ import (
 	"github.com/Fajar-Islami/fajar_discord_bot/service/translate"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 var (
@@ -76,13 +81,41 @@ func main() {
 	// Wait here untul CTRC-C or other term sign is received.
 	fmt.Printf("Bot is now running on %s environtment. Press CTRL+C to exit\n", ENVIRONMENT)
 
-	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
-	<-sc
+	// sc := make(chan os.Signal, 1)
+	// signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	// <-sc
+
+	router := httprouter.New()
+	router.GET("/", healthCheck)
+	router.GET("/health", healthCheck)
+
+	server := http.Server{
+		Addr:    "localhost:8000",
+		Handler: router,
+	}
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("listen and serve returned err: %v", err)
+		}
+	}()
+
+	<-ctx.Done()
+	log.Println("got interruption signal")
+	if err := server.Shutdown(context.TODO()); err != nil {
+		log.Printf("server shutdown returned an err: %v\n", err)
+	}
 
 	// Cleanly  close down the Discord session
 	dg.Close()
+	log.Println("Cleanly  close down the Discord session")
+}
 
+func healthCheck(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	fmt.Fprintf(w, "Hello world")
 }
 
 // This function will be called (due to AddHandler above) every time a new

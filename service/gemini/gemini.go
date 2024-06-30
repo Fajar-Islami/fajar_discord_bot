@@ -36,9 +36,54 @@ func (a *AIGeminiImpl) GenerateText(search string) (result []string) {
 	fmt.Println("search", search)
 
 	// For text-only input, use the gemini-pro model
-	model := a.client.GenerativeModel("gemini-pro")
+	// model := a.client.GenerativeModel("gemini-pro")
+	model := a.client.GenerativeModel("gemini-1.5-flash")
 	// configure the safety settings thresholds
 	// model.SafetySettings = []*genai.SafetySetting{
+	// 	{
+	// 		Category:  genai.HarmCategoryUnspecified,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryDerogatory,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryToxicity,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryViolence,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategorySexual,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryMedical,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryDangerous,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryHarassment,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryDangerousContent,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryHateSpeech,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategorySexuallyExplicit,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
 	// 	{
 	// 		Category:  genai.HarmCategoryDangerousContent,
 	// 		Threshold: genai.HarmBlockNone,
