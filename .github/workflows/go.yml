@@ -61,6 +61,24 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
+  deploy:
+    name: Deploy app
+    needs:
+      - build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2221
+          script: |
+            cd ~/documents/
+            date >> test.md
+            cat test.md
+
   # deploy:
   #   name: Deploy app
   #   needs:
