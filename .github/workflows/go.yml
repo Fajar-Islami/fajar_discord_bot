@@ -78,6 +78,8 @@ jobs:
             cd ~/documents/
             date >> test.md
             cat test.md
+            docker login ${env.REGISTRY} -u ${github.actor} -p ${secrets.GITHUB_TOKEN}
+            docker pull  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
 
   # deploy:
   #   name: Deploy app
