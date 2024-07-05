@@ -80,6 +80,7 @@ jobs:
             echo ${{ env.IMAGE_NAME}} | tr '[:upper:]' '[:lower:]'  >> test.md
             cat test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+            docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}} | tr '[:upper:]' '[:lower:]'  >> test.md
 
   # deploy:
   #   name: Deploy app
