@@ -77,8 +77,8 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-             ${{ github.repository }} >> test.md
-             ${{ github.repository.toLowerCase }} >> test.md
+            eecho "${{ github.repository }""} >> test.md
+            eecho "${{ github.repository.toLowerCase }""} >> test.md
             cat test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
 
