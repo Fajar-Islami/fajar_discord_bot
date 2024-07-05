@@ -67,11 +67,6 @@ jobs:
       - build-image
     runs-on: ubuntu-latest
     steps:
-      # - id: string
-      #   uses: ASzc/change-string-case-action@v6
-      #   with:
-      #     string: ${{ github.repository }}
-
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
@@ -82,7 +77,7 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo ${{ github.repository.toLowerCase }} | tr '[:upper:]' '[:lower:]'  >> test.md
+            echo ${{ env.IMAGE_NAME}} | tr '[:upper:]' '[:lower:]'  >> test.md
             cat test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
 
