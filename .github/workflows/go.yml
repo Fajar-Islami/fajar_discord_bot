@@ -82,7 +82,7 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            eecho "${{ github.repository.toLowerCase }}" | tr '[:upper:]' '[:lower:]'  >> test.md
+            eecho ${{ github.repository.toLowerCase }} | tr '[:upper:]' '[:lower:]'  >> test.md
             cat test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
 
