@@ -77,10 +77,9 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo ${{ env.IMAGE_NAME}} | tr '[:upper:]' '[:lower:]'  >> test.md
-            cat test.md
+            echo  ${{GITHUB_SHA}} 
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-            docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}} | tr '[:upper:]' '[:lower:]' -
+            docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}}
 
   # deploy:
   #   name: Deploy app
