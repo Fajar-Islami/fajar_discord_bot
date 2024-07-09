@@ -77,7 +77,7 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo  ${{GITHUB_SHA}} 
+            echo ${{ steps.meta.outputs.tags }}
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
             docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}}
 
