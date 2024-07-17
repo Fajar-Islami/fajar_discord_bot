@@ -79,6 +79,7 @@ jobs:
             date >> test.md
             echo ${{ steps.meta.outputs.tags }}
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+            docker info
             docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}}
 
   # deploy:
