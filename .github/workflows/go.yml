@@ -81,10 +81,10 @@ jobs:
             echo ${{ jobs.steps.meta.outputs.labels }} >> test.md
             echo ${{ steps.build-image.meta.outputs.labels }} >> test.md
 
-          # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-          # docker info
-          # echo ${{ jobs.steps.meta.outputs.labels }}
-          # echo ${{ steps.build-image.meta.outputs.labels }}
+  # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+  # docker info
+  # echo ${{ jobs.steps.meta.outputs.labels }}
+  # echo ${{ steps.build-image.meta.outputs.labels }}
   # deploy:
   #   name: Deploy app
   #   needs:
