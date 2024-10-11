@@ -50,7 +50,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          # context: "{{defaultContext}}"
+          context: "{{defaultContext}}"
           push: ${{ github.event_name != 'pull_request' }} # Don't push on PR
           tags: ${{ github.sha }}
           # labels: ${{ steps.meta.outputs.labels }}
