@@ -23,8 +23,7 @@ jobs:
       attestations: write
       id-token: write
     outputs:
-      tagimg: ${{ steps.meta.outputs.tags }}
-      versionnimg: ${{ steps.push.outputs.digest }}
+      tagimg: ${{ steps.push.outputs.tagimg }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -62,27 +61,26 @@ jobs:
       #     subject-digest: ${{ steps.push.outputs.digest }}
       #     push-to-registry: true
 
-  # deploy:
-  #   name: Deploy app
-  #   needs:
-  #     - build-image
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Deploy using ssh
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         username: ${{ secrets.SSH_USERNAME }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         port: 2221
-  #         script: |
-  #           cd ~/documents/
-  #           date >> test.md
-  #           echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
-  #           echo "versionnimg ${{ needs.build-image.outputs.versionnimg }} " >> test.md
-  #           docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-  #           docker logout ghcr.io
-  #           docker pull ghcr.io/fajar-islami/fajar_discord_bot
+  deploy:
+    name: Deploy app
+    needs:
+      - build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2221
+          script: |
+            cd ~/documents/
+            date >> test.md
+            echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
+            docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+            docker logout ghcr.io
+            docker pull {{needs.build-image.outputs.tagimg}}
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
   # docker info
