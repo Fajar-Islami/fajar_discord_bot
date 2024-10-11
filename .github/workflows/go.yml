@@ -24,7 +24,7 @@ jobs:
       id-token: write
     outputs:
       tagimg: ${{ steps.meta.outputs.tags }}
-      labels: ${{ steps.meta.outputs.labels }}
+      labelsimg: ${{ steps.meta.outputs.labels }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -80,8 +80,8 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo ${{ needs.build-image.outputs.tagimg }} >> test.md
-            echo ${{ needs.build-image.outputs.labels }} >> test.md
+            echo "tagimg ${{ needs.build-image.outputs.tagimg }} " ">> test.md
+            echo "labelsimg ${{ needs.build-image.outputs.labelsimg }} " ">> test.md
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
   # docker info
