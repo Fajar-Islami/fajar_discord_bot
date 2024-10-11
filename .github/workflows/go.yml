@@ -77,11 +77,14 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo ${{ steps.meta.outputs.tags }}
-            docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-            docker info
-            docker pull ${{env.REGISTRY}}/${{ env.IMAGE_NAME}}
+            echo ${{ steps.meta.outputs.tags }} >> test.md
+            echo ${{ jobs.steps.meta.outputs.labels }} >> test.md
+            echo ${{ steps.build-image.meta.outputs.labels }} >> test.md
 
+          # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+          # docker info
+          # echo ${{ jobs.steps.meta.outputs.labels }}
+          # echo ${{ steps.build-image.meta.outputs.labels }}
   # deploy:
   #   name: Deploy app
   #   needs:
