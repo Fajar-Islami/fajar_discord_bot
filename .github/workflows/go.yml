@@ -83,6 +83,7 @@ jobs:
             echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
             echo "versionnimg ${{ needs.build-image.outputs.versionnimg }} " >> test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+            docker logout ghcr.io
             docker pull ghcr.io/fajar-islami/fajar_discord_bot
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
