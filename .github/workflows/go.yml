@@ -22,8 +22,8 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-    outputs:
-      tagimg: ${{ steps.push.outputs.zz }}
+    # outputs:
+    # tagimg: ${{ steps.push.outputs.zz }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,11 +39,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      #   with:
+      #     images: ${{ github.sha }}
 
       - name: Build and push Docker images
         id: push
@@ -51,8 +51,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }} # Don't push on PR
-          # tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          tags: ${{ steps.meta.outputs.images }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           # labels: ${{ steps.meta.outputs.labels }}
 
       # - name: Generate artifact attestation
@@ -80,7 +79,7 @@ jobs:
             date >> test.md
             echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-            docker pull {{needs.build-image.outputs.tagimg}}
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
   # docker info
