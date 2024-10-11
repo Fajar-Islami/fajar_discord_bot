@@ -79,7 +79,6 @@ jobs:
             date >> test.md
             echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
-            docker logout ghcr.io
             docker pull {{needs.build-image.outputs.tagimg}}
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
