@@ -80,8 +80,8 @@ jobs:
           script: |
             cd ~/documents/
             date >> test.md
-            echo "tagimg ${{ needs.build-image.outputs.tagimg }} " ">> test.md
-            echo "labelsimg ${{ needs.build-image.outputs.labelsimg }} " ">> test.md
+            echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
+            echo "labelsimg ${{ needs.build-image.outputs.labelsimg }} " >> test.md
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
   # docker info
