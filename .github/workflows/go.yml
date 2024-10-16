@@ -75,6 +75,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2221
           script: |
+            set -e
             cd ~/documents/
             date >> test.md
             echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
@@ -82,7 +83,7 @@ jobs:
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             echo ${{ vars.ENV }} | base64 -d > .env
             docker ps -a --filter "ancestor=${{ env.IMAGE_NAME }}" --format "{{.ID}}" | xargs -r docker rm
-            docker run  --add-host=host.docker.internal:host-gateway  --name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}_${{ github.sha }} -v ./.env:/app/.env -d --restart=on-failure:5 --network fajar_discord_bot ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            docker run  --add-host=host.docker.internal:host-gateway  --name ${{ env.IMAGE_NAME }}_${{ github.sha }} -v ./.env:/app/.env -d --restart=on-failure:5 --network fajar_discord_bot ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             rm .env
             docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
 
