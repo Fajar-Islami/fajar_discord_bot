@@ -1,4 +1,4 @@
-FROM golang:1.22.4-alpine As build
+FROM golang:1.22.4-alpine AS build
 LABEL stage=dockerbuilder
 
 # Copy go.mod and go.sum first to take advantage of Docker caching.
@@ -14,7 +14,6 @@ COPY . .
 RUN go build -o fajar-discord-bot
 
 FROM alpine:latest
-WORKDIR /app
-COPY --from=build /app/fajar-discord-bot /app/fajar-discord-bot
+COPY --from=build /fajar-discord-bot /fajar-discord-bot
 
-ENTRYPOINT [ "/app/fajar-discord-bot" ]
+ENTRYPOINT [ "/fajar-discord-bot" ]
