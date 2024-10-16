@@ -1,7 +1,13 @@
 FROM golang:1.22.4-alpine as build
 LABEL stage=dockerbuilder
 
-WORKDIR /app
+# Copy go.mod and go.sum first to take advantage of Docker caching.
+COPY go.mod go.sum ./
+
+# Download dependencies.
+RUN go mod download
+
+# copy code
 COPY . .
 
 # Build the binary

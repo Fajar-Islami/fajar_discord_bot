@@ -54,3 +54,7 @@ dockerdown: ## rm compose image
 dockerrm:
 	docker rm ${registry}/${username}/${image}:${tags} -f
 	docker rmi ${registry}/${username}/${image}:${tags}
+
+
+	docker run -it --rm ghcr.io/fajar-islami/fajar_discord_bot:0a9e223cca4f10655fece8b611979a6ac84846de bash
+	docker exec -it ghcr.io/fajar-islami/fajar_discord_bot:0a9e223cca4f10655fece8b611979a6ac84846de /bin/bash
