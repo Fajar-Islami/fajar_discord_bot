@@ -77,16 +77,27 @@ jobs:
           port: 2221
           script: |
             set -e
-            cd ~/documents/
+            # cd ~/documents/
             date >> test.md
-            echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
             echo "${{ vars.ENV }}" > .env
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
+            docker rm -f ${{ env.CONTAINER_NAME }}
             docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
+            echo ${{ env.CONTAINER_NAME }}
             docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
+
+  # NO DOWNTIME TPI MASIH BUG, gk keapus container
+  # cd ~/documents/
+  # date >> test.md
+  # echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
+  # echo "${{ vars.ENV }}" > .env
+  # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
+  # docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+  # docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm -f
+  # docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+  # echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
+  # docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
 
   # NOTE FOR DEPLOY CTL
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
