@@ -12,7 +12,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: fajar-islami/fajar_discord_bot
-  CONTAINER_NAME: fajar-islami/fajar_discord_bot
+  CONTAINER_NAME: fajar_discord_bot
 
 jobs:
   build-image:
