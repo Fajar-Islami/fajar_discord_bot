@@ -82,12 +82,12 @@ jobs:
             echo "tagimg ${{ needs.build-image.outputs.tagimg }} " >> test.md
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            echo ${{ vars.ENV }} > .env
+            echo "${{ vars.ENV }}"" > .env
+            docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
+            docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
+            docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
 
-          # docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
-          # docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          # echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
-          # docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
   # docker info
   # echo ${{ jobs.steps.meta.outputs.labels }}
