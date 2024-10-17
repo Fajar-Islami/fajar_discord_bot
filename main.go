@@ -24,6 +24,7 @@ import (
 )
 
 var (
+	PORT                    string
 	BOT_TOKEN               string
 	JOKESBAPAKBAPAKURI      string
 	ENVIRONMENT             string
@@ -42,7 +43,7 @@ func init() {
 		log.Println("err read env file : ", err)
 	}
 
-	log.Println("ReadInConfig", err)
+	PORT = os.Getenv("PORT")
 	BOT_TOKEN = os.Getenv("BOT_TOKEN")
 	JOKESBAPAKBAPAKURI = os.Getenv("JOKESBAPAKBAPAKURI")
 	ENVIRONMENT = os.Getenv("ENVIRONMENT")
@@ -90,13 +91,14 @@ func main() {
 	router.GET("/health", healthCheck)
 
 	server := http.Server{
-		Addr:    "localhost:8000",
+		Addr:    "localhost:" + PORT,
 		Handler: router,
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
+	fmt.Println("Running on PORT", PORT)
 	go func() {
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("listen and serve returned err: %v", err)
@@ -115,7 +117,7 @@ func main() {
 }
 
 func healthCheck(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	fmt.Fprintf(w, "Hello world")
+	fmt.Fprintf(w, "Fajar Bot is up")
 }
 
 // This function will be called (due to AddHandler above) every time a new
