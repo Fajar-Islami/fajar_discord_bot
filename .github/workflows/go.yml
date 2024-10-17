@@ -12,6 +12,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: fajar-islami/fajar_discord_bot
+  CONTAINER_NAME: fajar-islami/fajar_discord_bot
 
 jobs:
   build-image:
@@ -82,8 +83,8 @@ jobs:
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             echo ${{ vars.ENV }} | base64 -d > .env
-            docker ps -a --filter "ancestor=${{ env.IMAGE_NAME }}" --format "{{.ID}}" | xargs -r docker rm
-            docker run  --add-host=host.docker.internal:host-gateway  --name ${{ env.IMAGE_NAME }}_${{ github.sha }} -v ./.env:/app/.env -d --restart=on-failure:5 --network fajar_discord_bot ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            docker ps -a --filter "ancestor=${{ CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
+            docker run  --add-host=host.docker.internal:host-gateway  --name ${{ CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/app/.env -d --restart=on-failure:5 --network fajar_discord_bot ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             rm .env
             docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
 
