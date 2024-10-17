@@ -86,7 +86,6 @@ jobs:
             docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
             echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
             docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/app/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            rm .env
             docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | grep -v ":${{ github.sha }}" | xargs -r docker rmi
 
   # docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
