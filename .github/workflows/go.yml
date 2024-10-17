@@ -83,7 +83,6 @@ jobs:
             echo "${{ vars.ENV }}" > .env
             docker login ${{env.REGISTRY}} -u ${{github.actor}} -p ${{secrets.GITHUB_TOKEN}}
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            echo "${{ vars.ENV }}"" > .env
             docker ps -a --filter "ancestor=${{ env.CONTAINER_NAME }}" --format "{{.ID}}" | xargs -r docker rm
             docker run  --add-host=host.docker.internal:host-gateway --name ${{ env.CONTAINER_NAME }}_${{ github.sha }} -v ./.env:/.env -d --restart=on-failure:5 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             echo ${{ env.CONTAINER_NAME }}_${{ github.sha }}
